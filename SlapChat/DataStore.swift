@@ -12,6 +12,7 @@ import CoreData
 class DataStore {
     
     var messages:[Message] = []
+    var recipients: [Recipient] = []
     
     static let sharedInstance = DataStore()
     
@@ -68,6 +69,8 @@ class DataStore {
         let context = persistentContainer.viewContext
         let messagesRequest: NSFetchRequest<Message> = Message.fetchRequest()
         
+        
+        
         do {
             messages = try context.fetch(messagesRequest)
             messages.sort(by: { (message1, message2) -> Bool in
@@ -107,6 +110,19 @@ class DataStore {
         
         saveContext()
         fetchData()
+    }
+    
+    func fetchRecipientData() {
+        let managedContext = persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<Recipient> = Recipient.fetchRequest()
+        
+        do{ let recipientData = try managedContext.fetch(fetchRequest)
+           recipients = recipientData
+        }catch{
+            
+        }
+  
+        
     }
     
 }
